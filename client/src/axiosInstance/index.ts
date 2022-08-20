@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-
 import { User } from '../../../shared/types';
 import { baseUrl } from './constants';
 

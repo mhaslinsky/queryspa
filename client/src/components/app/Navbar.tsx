@@ -19,7 +19,6 @@ const Links = ['treatments', 'staff', 'calendar'];
 const NavLink = ({ to, children }: { to: string; children: ReactNode }) => (
   <Link href={to} passHref>
     <ChakraLink
-      as={Link}
       px={2}
       py={1}
       rounded="md"
@@ -39,7 +38,7 @@ export function Navbar(): ReactElement {
   const router = useRouter();
 
   return (
-    <Box bg="gray.900" px={4}>
+    <Box bg="gray" px={4}>
       <Flex h={16} alignItems="center" justify="space-between">
         <HStack spacing={8} alignItems="center">
           <NavLink to="/">

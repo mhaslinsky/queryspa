@@ -1,10 +1,10 @@
 import { Spinner, Text } from '@chakra-ui/react';
 import { ReactElement } from 'react';
+import { useIsFetching } from '@tanstack/react-query';
 
 export function Loading(): ReactElement {
-  // will use React Query `useIsFetching` to determine whether or not to display
-  const isFetching = false; // for now, just don't display
-
+  //returns number of pending fetches
+  const isFetching = useIsFetching();
   const display = isFetching ? 'inherit' : 'none';
 
   return (
@@ -16,8 +16,8 @@ export function Loading(): ReactElement {
       role="status"
       position="fixed"
       zIndex="9999"
-      top="50%"
-      left="50%"
+      top="10%"
+      right="5%"
       transform="translate(-50%, -50%)"
       display={display}
     >

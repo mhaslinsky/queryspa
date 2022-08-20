@@ -13,7 +13,6 @@ export function BackgroundImage(): ReactElement {
       left="0"
       zIndex="-1"
       src="/splash.jpg"
-      fallbackSrc="https://via.placeholder.com/150"
       alt="peaceful orchids and stacked rocks"
     />
   );
