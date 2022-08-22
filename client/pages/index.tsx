@@ -3,8 +3,10 @@ import type { NextPage } from 'next';
 import { GiFlowerPot } from 'react-icons/gi';
 import React from 'react';
 import { BackgroundImage } from '../src/components/common/BackgroundImage';
+import { usePrefetchTreatments } from 'components/treatments/hooks/useTreatments';
 
 const Home: NextPage = () => {
+  usePrefetchTreatments();
   return (
     <Stack align="center" justify="center" height="84vh">
       <BackgroundImage />

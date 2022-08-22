@@ -21,6 +21,7 @@ const NavLink = ({ to, children }: { to: string; children: ReactNode }) => (
     <ChakraLink
       px={2}
       py={1}
+      color="white"
       rounded="md"
       _hover={{
         textDecoration: 'none',
@@ -38,7 +39,7 @@ export function Navbar(): ReactElement {
   const router = useRouter();
 
   return (
-    <Box bg="gray" px={4}>
+    <Box bg="gray.900" px={4}>
       <Flex h={16} alignItems="center" justify="space-between">
         <HStack spacing={8} alignItems="center">
           <NavLink to="/">
