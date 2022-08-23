@@ -17,7 +17,6 @@ export function useTreatments(): Treatment[] {
 }
 
 export function usePrefetchTreatments(): void {
-  console.log('prefetching treatments');
   const client = useQueryClient();
   client.prefetchQuery(['treatments'], getTreatments);
 }

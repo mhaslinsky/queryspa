@@ -13,6 +13,7 @@ export async function get(req: Request, res: Response): Promise<Response> {
   }
   try {
     const appointments = await db.getAppointmentsByMonthYear(month, year);
+    console.log(appointments);
     return res.status(200).json(appointments);
   } catch (e) {
     return res.status(500).json({
