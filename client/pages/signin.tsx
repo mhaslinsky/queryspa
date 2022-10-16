@@ -12,7 +12,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-
+import { useRouter } from 'next/router';
 import { useAuth } from '../src/auth/useAuth';
 import { useUser } from '../src/components/user/hooks/useUser';
 
@@ -22,9 +22,11 @@ const Signin = () => {
   const [dirty, setDirty] = useState({ email: false, password: false });
   const auth = useAuth();
   const { user } = useUser();
+  const router = useRouter();
 
   if (user) {
     //implement Next redirect logic
+    router.push('/user/${user.id}');
     // return <Redirect to={`/user/${user.id}`} />;
   }
 

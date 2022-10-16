@@ -1,6 +1,12 @@
 // @ts-nocheck
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import { axiosInstance } from '../../../axiosInstance';
 import { queryKeys } from '../../../react-query/constants';
 import { useUser } from '../../user/hooks/useUser';
@@ -8,6 +14,7 @@ import { AppointmentDateMap } from '../types';
 import { getAvailableAppointments } from '../utils';
 import { getMonthYearDetails, getNewMonthYear, MonthYear } from './monthYear';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Appointment } from '../../../../../shared/types';
 
 // for useQuery call
 async function getAppointments(
@@ -26,7 +33,6 @@ interface UseAppointments {
   showAll: boolean;
   setShowAll: Dispatch<SetStateAction<boolean>>;
 }
-
 // The purpose of this hook:
 //   1. track the current month/year (aka monthYear) selected by the user
 //     1a. provide a way to update state
@@ -60,13 +66,20 @@ export function useAppointments(): UseAppointments {
   //   appointments that the logged-in user has reserved (in white)
   const { user } = useUser();
 
-  /** ****************** END 2: filter appointments  ******************** */
-  /** ****************** START 3: useQuery  ***************************** */
+  //takes data and transforms it
+  const selectFn = useCallback(
+    (data: AppointmentDateMap) => {
+      return getAvailableAppointments(data, user);
+    },
+    [user],
+  );
+
   // useQuery call for appointments for the current monthYear
   const fallback = {};
   const { data: appointments = fallback, isLoading, isError } = useQuery(
     ['appointments', monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
+    { select: showAll ? undefined : selectFn },
   );
 
   useEffect(() => {
@@ -77,7 +90,7 @@ export function useAppointments(): UseAppointments {
     );
   }, [monthYear]);
 
-  /** ****************** END 3: useQuery  ******************************* */
+  console.log(appointments);
 
   return { appointments, monthYear, updateMonthYear, showAll, setShowAll };
 }

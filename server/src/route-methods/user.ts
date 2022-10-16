@@ -137,7 +137,7 @@ export async function auth(req: Request, res: Response): Promise<Response> {
 
   // create jwt
   const user = removePasswordandAddToken(validUser);
-
+  console.log(user);
   return res.status(200).json({ user });
 }
 
