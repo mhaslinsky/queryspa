@@ -8,17 +8,20 @@ import {
   getStoredUser,
   setStoredUser,
 } from '../../../user-storage';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-// async function getUser(user: User | null): Promise<User | null> {
-//   if (!user) return null;
-//   const { data }: AxiosResponse<{ user: User }> = await axiosInstance.get(
-//     `/user/${user.id}`,
-//     {
-//       headers: getJWTHeader(user),
-//     },
-//   );
-//   return data.user;
-// }
+async function getUser(user: User | null): Promise<User | null> {
+  if (!user) return null;
+  const { data }: AxiosResponse<{ user: User }> = await axiosInstance.get(
+    `/user/${user.id}`,
+    {
+      headers: getJWTHeader(user),
+    },
+  );
+  console.log(data.user);
+  return data.user;
+}
 
 interface UseUser {
   user: User | null;
@@ -27,17 +30,39 @@ interface UseUser {
 }
 
 export function useUser(): UseUser {
-  // TODO: call useQuery to update user data from server
-  const user = null;
+  const queryClient = useQueryClient();
 
-  // meant to be called from useAuth
+  // useEffect(() => {
+  //   const user = getStoredUser();
+  //   if (user) {
+  //     queryClient.setQueryData(['user'], user);
+  //   }
+  // }, []);
+
+  //call useQuery to update user data from server
+  const { data: user } = useQuery(['user'], () => getUser(user), {
+    onSuccess: (received: User | null) => {
+      if (received) {
+        console.log(received);
+        setStoredUser(received);
+      } else {
+        console.log('no user');
+        clearStoredUser();
+      }
+    },
+    onError: (error) => {
+      console.warn(error);
+    },
+  });
+
   function updateUser(newUser: User): void {
-    // TODO: update the user in the query cache
+    //update the user in the query cache
+    queryClient.setQueryData(['user'], newUser);
   }
 
-  // meant to be called from useAuth
   function clearUser() {
-    // TODO: reset user to null in query cache
+    // reset user to null in query cache
+    queryClient.setQueryData(['user'], null);
   }
 
   return { user, updateUser, clearUser };

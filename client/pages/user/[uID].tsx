@@ -1,5 +1,5 @@
 import { NextPage } from 'next/types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -21,9 +21,11 @@ const UserPage: NextPage = () => {
   const patchUser = usePatchUser();
   const router = useRouter();
 
-  if (!user) {
-    router.push('/signin');
-  }
+  useEffect(() => {
+    if (!user) {
+      router.push('/signin');
+    }
+  }, []);
 
   const formElements = ['name', 'address', 'phone'];
   interface FormValues {

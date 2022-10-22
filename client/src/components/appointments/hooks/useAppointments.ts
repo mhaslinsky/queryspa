@@ -8,7 +8,6 @@ import {
   useCallback,
 } from 'react';
 import { axiosInstance } from '../../../axiosInstance';
-import { queryKeys } from '../../../react-query/constants';
 import { useUser } from '../../user/hooks/useUser';
 import { AppointmentDateMap } from '../types';
 import { getAvailableAppointments } from '../utils';
@@ -43,21 +42,14 @@ interface UseAppointments {
 //     3a. return the only the applicable appointments for the current monthYear
 export function useAppointments(): UseAppointments {
   const client = useQueryClient();
-  /** ****************** START 1: monthYear state *********************** */
   // get the monthYear for the current date (for default monthYear state)
   const currentMonthYear = getMonthYearDetails(dayjs());
-
   // state to track current monthYear chosen by user
-  // state value is returned in hook return object
   const [monthYear, setMonthYear] = useState(currentMonthYear);
-
   // setter to update monthYear obj in state when user changes month in view,
-  // returned in hook return object
   function updateMonthYear(monthIncrement: number): void {
     setMonthYear((prevData) => getNewMonthYear(prevData, monthIncrement));
   }
-  /** ****************** END 1: monthYear state ************************* */
-  /** ****************** START 2: filter appointments  ****************** */
   // State and functions for filtering appointments to show all or only available
   const [showAll, setShowAll] = useState(false);
 
@@ -79,7 +71,15 @@ export function useAppointments(): UseAppointments {
   const { data: appointments = fallback, isLoading, isError } = useQuery(
     ['appointments', monthYear.year, monthYear.month],
     () => getAppointments(monthYear.year, monthYear.month),
-    { select: showAll ? undefined : selectFn },
+    {
+      select: showAll ? undefined : selectFn,
+      staleTime: 0, //overwriting globals to make sure we get fresh data
+      cacheTime: 300000,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+      refetchInterval: 60000,
+    },
   );
 
   useEffect(() => {
@@ -87,6 +87,10 @@ export function useAppointments(): UseAppointments {
     client.prefetchQuery(
       ['appointments', nextMonthYear.year, nextMonthYear.month],
       () => getAppointments(nextMonthYear.year, nextMonthYear.month),
+      {
+        staleTime: 0, //overwriting globals to make sure we get fresh data
+        cacheTime: 300000,
+      },
     );
   }, [monthYear]);
 

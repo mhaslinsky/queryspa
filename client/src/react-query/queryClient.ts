@@ -18,5 +18,14 @@ function queryErrorHandler(error: unknown): void {
 export const queryClient = new QueryClient({
   // any query that errors out in the app will be handled by the queryErrorHandler
   //similar to my default HttpError object in the backend of Insta-sham
-  defaultOptions: { queries: { onError: queryErrorHandler } },
+  defaultOptions: {
+    queries: {
+      onError: queryErrorHandler,
+      staleTime: 60000,
+      cacheTime: 90000,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  },
 });

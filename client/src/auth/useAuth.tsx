@@ -41,7 +41,6 @@ export function useAuth(): UseAuth {
         toast({ title, status: 'warning' });
         return;
       }
-      console.log(data);
       if ('user' in data && 'token' in data.user) {
         toast({
           title: `Logged in as ${data.user.email}`,
