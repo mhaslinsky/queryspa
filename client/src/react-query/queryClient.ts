@@ -5,6 +5,7 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { useEffect } from 'react';
 
+const toast = createStandaloneToast({ theme });
 let localStoragePersister;
 
 function queryErrorHandler(error: unknown): void {
