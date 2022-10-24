@@ -94,7 +94,5 @@ export function useAppointments(): UseAppointments {
     );
   }, [monthYear]);
 
-  console.log(appointments);
-
   return { appointments, monthYear, updateMonthYear, showAll, setShowAll };
 }

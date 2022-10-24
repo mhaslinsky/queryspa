@@ -40,7 +40,6 @@ export function getAvailableAppointments(
   appointments: AppointmentDateMap,
   user: User | null,
 ): AppointmentDateMap {
-  // console.log(appointments);
   // clone so as not to mutate argument directly
   const filteredAppointments = { ...appointments };
   // only keep appointments that are open (or taken by the logged-in user) and are not in the past)
@@ -51,6 +50,5 @@ export function getAvailableAppointments(
         !appointmentInPast(appointment),
     );
   });
-  // console.log(filteredAppointments);
   return filteredAppointments;
 }
