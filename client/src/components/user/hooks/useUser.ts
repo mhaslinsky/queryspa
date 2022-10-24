@@ -3,11 +3,6 @@ import { AxiosResponse } from 'axios';
 import type { User } from '../../../../../shared/types';
 import { axiosInstance, getJWTHeader } from '../../../axiosInstance';
 import { queryKeys } from '../../../react-query/constants';
-import {
-  clearStoredUser,
-  getStoredUser,
-  setStoredUser,
-} from '../../../user-storage';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -31,19 +26,20 @@ interface UseUser {
 export function useUser(): UseUser {
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const user = getStoredUser();
-    if (user) {
-      queryClient.setQueryData(['user'], user);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = getStoredUser();
+  //   if (user) {
+  //     queryClient.setQueryData(['user'], user);
+  //   }
+  // }, []);
 
   //call useQuery to update user data from server
   const { data: user } = useQuery(['user'], () => getUser(user), {
     staleTime: 0,
     onSuccess: (received) => {
-      if (received) setStoredUser(received);
-      else clearStoredUser();
+      //moved logic to persistant cache
+      // if (received) setStoredUser(received);
+      // else clearStoredUser();
     },
     onError: (error) => {
       console.warn(error);

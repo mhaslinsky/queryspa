@@ -6,7 +6,7 @@ import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import { useEffect } from 'react';
 
 const toast = createStandaloneToast({ theme });
-let localStoragePersister;
+export let localStoragePersister;
 
 function queryErrorHandler(error: unknown): void {
   // error is type unknown because in js, anything can be an error (e.g. throw(5))
@@ -39,5 +39,6 @@ if (typeof window !== 'undefined') {
 persistQueryClient({
   queryClient,
   persister: localStoragePersister,
+  buster: 'mybuster',
   maxAge: 86400000, //1 day
 });

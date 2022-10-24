@@ -19,16 +19,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#000000" />
         <title>Lazy Days Spa</title>
       </Head>
-      <ChakraProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={theme}>
           <Navbar />
           <Loading />
           <main>
             <Component {...pageProps} />
           </main>
           <ReactQueryDevtools />
-        </QueryClientProvider>
-      </ChakraProvider>
+        </ChakraProvider>
+      </QueryClientProvider>
     </>
   );
 }
