@@ -1,9 +1,13 @@
 import { createStandaloneToast } from '@chakra-ui/react';
 import { theme } from '../theme/index';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, QueryKey } from '@tanstack/react-query';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-import { persistQueryClient } from '@tanstack/react-query-persist-client';
-import { useEffect } from 'react';
+import {
+  persistQueryClient,
+  removeOldestQuery,
+} from '@tanstack/react-query-persist-client';
+import { Persister } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 
 const toast = createStandaloneToast({ theme });
 export let localStoragePersister;
@@ -33,7 +37,10 @@ export const queryClient = new QueryClient({
 if (typeof window !== 'undefined') {
   localStoragePersister = createSyncStoragePersister({
     storage: window.localStorage,
+    retry: removeOldestQuery,
   });
+} else {
+  localStoragePersister = createSyncStoragePersister({ storage: undefined });
 }
 
 persistQueryClient({
@@ -41,4 +48,12 @@ persistQueryClient({
   persister: localStoragePersister,
   buster: 'mybuster',
   maxAge: 86400000, //1 day
+  dehydrateOptions: {
+    shouldDehydrateQuery: ({ queryKey }) => {
+      //telling RQ to only dehydrate(persist) the user data in cache
+      if (queryKey.toString().includes('user')) {
+        return true;
+      }
+    },
+  },
 });
