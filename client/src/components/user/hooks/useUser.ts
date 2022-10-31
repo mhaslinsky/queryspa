@@ -25,21 +25,11 @@ interface UseUser {
 
 export function useUser(): UseUser {
   const queryClient = useQueryClient();
-
-  // useEffect(() => {
-  //   const user = getStoredUser();
-  //   if (user) {
-  //     queryClient.setQueryData(['user'], user);
-  //   }
-  // }, []);
-
   //call useQuery to update user data from server
   const { data: user } = useQuery(['user'], () => getUser(user), {
     staleTime: 0,
     onSuccess: (received) => {
       //moved logic to persistant cache
-      // if (received) setStoredUser(received);
-      // else clearStoredUser();
     },
     onError: (error) => {
       console.warn(error);
@@ -49,13 +39,11 @@ export function useUser(): UseUser {
   function updateUser(newUser: User): void {
     //update the user in the query cache
     queryClient.setQueryData(['user'], newUser);
-    // setStoredUser(newUser);
   }
 
   function clearUser() {
     // reset user to null in query cache
     queryClient.setQueryData(['user'], null);
-    // clearStoredUser();
   }
 
   return { user, updateUser, clearUser };

@@ -29,6 +29,8 @@ export async function get(req: AuthRequest, res: Response): Promise<Response> {
     const user = removePasswordandAddToken(userData);
 
     // return user and appointments
+    console.log('endpoint hit');
+    console.log(user);
     return res.status(200).json({ user });
   } catch (e) {
     return res.status(500).json({ message: `could not get user: ${e}` });
@@ -137,7 +139,6 @@ export async function auth(req: Request, res: Response): Promise<Response> {
 
   // create jwt
   const user = removePasswordandAddToken(validUser);
-  console.log(user);
   return res.status(200).json({ user });
 }
 

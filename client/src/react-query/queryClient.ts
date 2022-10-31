@@ -6,8 +6,6 @@ import {
   persistQueryClient,
   removeOldestQuery,
 } from '@tanstack/react-query-persist-client';
-import { Persister } from '@tanstack/react-query-persist-client';
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 
 const toast = createStandaloneToast({ theme });
 export let localStoragePersister;
@@ -38,6 +36,7 @@ if (typeof window !== 'undefined') {
   localStoragePersister = createSyncStoragePersister({
     storage: window.localStorage,
     retry: removeOldestQuery,
+    key: 'lazyday',
   });
 } else {
   localStoragePersister = createSyncStoragePersister({ storage: undefined });
