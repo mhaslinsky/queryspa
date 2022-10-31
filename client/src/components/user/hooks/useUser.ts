@@ -1,10 +1,7 @@
 import { AxiosResponse } from 'axios';
-
 import type { User } from '../../../../../shared/types';
 import { axiosInstance, getJWTHeader } from '../../../axiosInstance';
-import { queryKeys } from '../../../react-query/constants';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
 
 async function getUser(user: User | null): Promise<User | null> {
   if (!user) return null;
@@ -44,6 +41,8 @@ export function useUser(): UseUser {
   function clearUser() {
     // reset user to null in query cache
     queryClient.setQueryData(['user'], null);
+    queryClient.removeQueries(['user-appointments']);
+    queryClient.removeQueries(['user']);
   }
 
   return { user, updateUser, clearUser };

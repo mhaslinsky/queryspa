@@ -50,7 +50,7 @@ persistQueryClient({
   dehydrateOptions: {
     shouldDehydrateQuery: ({ queryKey }) => {
       //telling RQ to only dehydrate(persist) the user data in cache
-      if (queryKey.toString().includes('user')) {
+      if (queryKey.toString().match(/^user$^/)) {
         return true;
       }
     },

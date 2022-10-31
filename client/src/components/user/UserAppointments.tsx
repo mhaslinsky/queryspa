@@ -12,7 +12,6 @@ import {
 import dayjs from 'dayjs';
 import { ReactElement } from 'react';
 import { ImCancelCircle } from 'react-icons/im';
-// import { Link, Redirect } from 'react-router-dom';
 import Link from 'next/link';
 
 import type { Appointment } from '../../../../shared/types';
