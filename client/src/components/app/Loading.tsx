@@ -1,11 +1,12 @@
 import { Spinner, Text } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import { useIsFetching } from '@tanstack/react-query';
+import { useIsFetching, useIsMutating } from '@tanstack/react-query';
 
 export function Loading(): ReactElement {
   //returns number of pending fetches
   const isFetching = useIsFetching();
-  const display = isFetching ? 'inherit' : 'none';
+  const isMutating = useIsMutating();
+  const display = isFetching || isMutating ? 'inherit' : 'none';
 
   return (
     <Spinner

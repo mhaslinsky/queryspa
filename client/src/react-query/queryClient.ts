@@ -29,6 +29,7 @@ export const queryClient = new QueryClient({
       onError: queryErrorHandler,
       cacheTime: 86400000, //1 day
     },
+    mutations: { onError: queryErrorHandler },
   },
 });
 
@@ -50,7 +51,7 @@ persistQueryClient({
   dehydrateOptions: {
     shouldDehydrateQuery: ({ queryKey }) => {
       //telling RQ to only dehydrate(persist) the user data in cache
-      if (queryKey.toString().match(/^user$^/)) {
+      if (queryKey.toString().includes('user')) {
         return true;
       }
     },
