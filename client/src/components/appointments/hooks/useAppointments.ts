@@ -53,11 +53,7 @@ export function useAppointments(): UseAppointments {
   // State and functions for filtering appointments to show all or only available
   const [showAll, setShowAll] = useState(false);
 
-  // We will need imported function getAvailableAppointments here
-  // We need the user to pass to getAvailableAppointments so we can show
-  //   appointments that the logged-in user has reserved (in white)
   const { user } = useUser();
-
   //takes data and transforms it
   const selectFn = useCallback(
     (data: AppointmentDateMap) => {
@@ -65,7 +61,6 @@ export function useAppointments(): UseAppointments {
     },
     [user],
   );
-
   // useQuery call for appointments for the current monthYear
   const fallback = {};
   const { data: appointments = fallback, isLoading, isError } = useQuery(

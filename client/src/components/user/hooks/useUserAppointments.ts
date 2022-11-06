@@ -20,7 +20,7 @@ export function useUserAppointments(): Appointment[] {
   const { user } = useUser();
 
   const { data: userAppointments = [] } = useQuery(
-    ['user-appointments'],
+    ['appointments', 'user', user?.id],
     () => getUserAppointments(user),
     {
       enabled: !!user,
